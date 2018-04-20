@@ -1,11 +1,24 @@
 var socket = io();
+
+function scrollToBottom() {
+    // Selectors
+    var messages = jQuery('#messages');
+    var newMessage = messages.children('li:last-child');
+
+    // Heights
+    var clientHeight = messages.prop('clientHeight');
+    var scrollTop = messages.prop('scrollTop');
+    var scrollHeight = messages.prop('scrollHeight');
+    var newMessageHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight();
+    
+    if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        messages.scrollTop(scrollHeight);
+    }
+}
+
 socket.on('connect', function () {
     console.log('Connected to server');
-
-    /* socket.emit('createMessage', {
-        to: 'jen@example.com',
-        text: 'Hello from FE'
-    }); */
 });
 
 socket.on('disconnect', function () {
@@ -22,14 +35,10 @@ socket.on('newMessage', function (message) {
     });
 
     jQuery('#messages').append(html);
-    /* 
-    var li = jQuery('<li></li>');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
-
-    jQuery('#messages').append(li); */
+    scrollToBottom();
 });
 
-socket.on('newLocationMessage', function(message){
+socket.on('newLocationMessage', function (message) {
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = jQuery('#location-message-template').html();
     var html = Mustache.render(template, {
@@ -39,20 +48,14 @@ socket.on('newLocationMessage', function(message){
     });
 
     jQuery('#messages').append(html);
-    /* var li = jQuery('<li></li>');
-    var a = jQuery('<a target="_blank">My current location</a>');
-
-    li.text(`${message.from} ${formattedTime}: `);
-    a.attr('href', message.url);
-    li.append(a);
-    jQuery('#messages').append(li); */
+    scrollToBottom();
 });
 
 jQuery('#message-form').on('submit', function (e) {
     e.preventDefault();
 
     var messageTextbox = jQuery('[name=message]');
-    
+
     socket.emit('createMessage', {
         from: 'User',
         text: messageTextbox.val()
@@ -61,10 +64,9 @@ jQuery('#message-form').on('submit', function (e) {
     });
 });
 
-
 var locationButton = jQuery('#send-location');
 locationButton.on('click', function () {
-    if(!navigator.geolocation){
+    if (!navigator.geolocation) {
         return alert('Geolocation not supported by your browser.');
     }
 
