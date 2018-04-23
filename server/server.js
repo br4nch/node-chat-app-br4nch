@@ -13,6 +13,7 @@ const {
 const {
     Users
 } = require('./utils/users');
+const bot = require('../telegram-bot-apis.js');
 
 const publicPath = path.join(__dirname, '/../public');
 const port = process.env.PORT || 5000;
@@ -28,7 +29,7 @@ io.on('connection', (socket) => {
 
     // socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
 
-    
+
 
     socket.on('join', (params, callback) => {
         if (!isRealString(params.name) || !isRealString(params.room)) {
