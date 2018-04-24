@@ -53,7 +53,7 @@ bot.onText(/\/delete-alert (.+)/, function onEchoText(msg, match) {
     });
 });
 
-bot.onText(/\/alerts+( [a-zA-Z0-9]{3,4})+?$/, function onEchoText(msg, match) {
+bot.onText(/\/alert( [a-zA-Z0-9]{3,4})?+$/, function onEchoText(msg, match) {
     const resp = match[1];
     bot.sendMessage(msg.chat.id, resp).catch((error) => {
         errorHandling(error);
