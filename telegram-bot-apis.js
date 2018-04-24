@@ -24,6 +24,13 @@ bot.on('message', (msg) => {
     bot.sendMessage(chatId, 'Received your message');
 });
 
+bot.onText(/\/start/, function onEchoText(msg, match) {
+    const resp = 'Thank you for choosing Cryptonaut Bot';
+    bot.sendMessage(msg.chat.id, resp).catch((error) => {
+        errorHandling(error);
+    });
+});
+
 // Matches /echo [whatever]
 bot.onText(/\/echo (.+)/, function onEchoText(msg, match) {
     const resp = match[1];
@@ -46,7 +53,7 @@ bot.onText(/\/delete-alert (.+)/, function onEchoText(msg, match) {
     });
 });
 
-bot.onText(/\/alert+( [a-zA-Z0-9]{3,4})+?$/, function onEchoText(msg, match) {
+bot.onText(/\/alerts+( [a-zA-Z0-9]{3,4})+?$/, function onEchoText(msg, match) {
     const resp = match[1];
     bot.sendMessage(msg.chat.id, resp).catch((error) => {
         errorHandling(error);
