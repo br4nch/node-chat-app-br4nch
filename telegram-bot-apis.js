@@ -34,6 +34,7 @@ bot.onText(/\/start/, function onEchoText(msg, match) {
 // Matches /echo [whatever]
 bot.onText(/\/echo (.+)/, function onEchoText(msg, match) {
     const resp = match[1];
+    console.log('Command text:', resp);
     bot.sendMessage(msg.chat.id, resp).catch((error) => {
         errorHandling(error);
     });
@@ -41,6 +42,7 @@ bot.onText(/\/echo (.+)/, function onEchoText(msg, match) {
 
 bot.onText(/\/create-alert (.+)/, function onEchoText(msg, match) {
     const resp = match[1];
+    console.log('Command text:', resp);
     bot.sendMessage(msg.chat.id, resp).catch((error) => {
         errorHandling(error);
     });
@@ -48,13 +50,18 @@ bot.onText(/\/create-alert (.+)/, function onEchoText(msg, match) {
 
 bot.onText(/\/delete-alert (.+)/, function onEchoText(msg, match) {
     const resp = match[1];
+    console.log('Command text:', resp);
     bot.sendMessage(msg.chat.id, resp).catch((error) => {
         errorHandling(error);
     });
 });
 
-bot.onText(/\/alert( [a-zA-Z0-9]{3,4})?$/, function onEchoText(msg, match) {
+bot.onText(/\/alerts( [a-zA-Z0-9]{3,4})?$/, function onEchoText(msg, match) {
     const resp = match[1];
+    if(match[1]){
+        resp = 'alert list';
+    }
+    console.log('Command text:', resp);
     bot.sendMessage(msg.chat.id, resp).catch((error) => {
         errorHandling(error);
     });
