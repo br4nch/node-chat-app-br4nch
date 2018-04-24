@@ -17,13 +17,55 @@ bot.on('message', (msg) => {
 
 });
 
-bot.onText(/\/echo (.+)/, (msg, match) => {
+bot.on('message', (msg) => {
     const chatId = msg.chat.id;
-    const resp = match[1];
 
-    bot.sendMessage(chatId, resp);
+    // send a message to the chat acknowledging receipt of their message
+    bot.sendMessage(chatId, 'Received your message');
 });
 
+// Matches /echo [whatever]
+bot.onText(/\/echo (.+)/, function onEchoText(msg, match) {
+    const resp = match[1];
+    bot.sendMessage(msg.chat.id, resp).catch((error) => {
+        errorHandling(error);
+    });
+});
+
+bot.onText(/\/create-alert (.+)/, function onEchoText(msg, match) {
+    const resp = match[1];
+    bot.sendMessage(msg.chat.id, resp).catch((error) => {
+        errorHandling(error);
+    });
+});
+
+bot.onText(/\/delete-alert (.+)/, function onEchoText(msg, match) {
+    const resp = match[1];
+    bot.sendMessage(msg.chat.id, resp).catch((error) => {
+        errorHandling(error);
+    });
+});
+
+bot.onText(/\/alert+( [a-zA-Z0-9]{3,4})+?$/, function onEchoText(msg, match) {
+    const resp = match[1];
+    bot.sendMessage(msg.chat.id, resp).catch((error) => {
+        errorHandling(error);
+    });
+});
+
+bot.on('polling_error', (error) => {
+    console.log('Polling error: ' + error.code);  // => 'EFATAL'
+});
+
+function errorHandling(error) {
+    if (error.code === 'EFATAL') {
+        console.log('Network error with code:', error.code);
+    } else if (error.code === 'EPARSE') {
+        console.log('Response body could not be parsed with code:', error.response.body);
+    } else {
+        console.log('There was an error with code:', error.response.body);
+    }
+}
 module.exports = {bot};
 
 /* bot.on('message', (msg) => {
