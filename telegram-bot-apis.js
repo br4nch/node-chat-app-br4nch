@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 
-const token = process.env.TELEGRAM_TOKEN;
+const token = process.env.TELEGRAM_TOKEN || '497091898:AAH_Hj_pwl40XT2w9URUY8SodOaT1INWSaI';
 
 const options = {
     polling: true
@@ -56,7 +56,7 @@ bot.onText(/\/delete-alert (.+)/, function onEchoText(msg, match) {
     });
 });
 
-bot.onText(/\/alerts( [a-zA-Z0-9]{3,4})?$/, function onEchoText(msg, match) {
+bot.onText(/\/alerts ([a-zA-Z0-9]{3,4})+$/, function onEchoText(msg, match) {
     const resp = match[1];
     if(match[1]){
         resp = 'alert list';
@@ -69,15 +69,16 @@ bot.onText(/\/alerts( [a-zA-Z0-9]{3,4})?$/, function onEchoText(msg, match) {
 
 bot.on('polling_error', (error) => {
     console.log('Polling error: ' + error.code);  // => 'EFATAL'
+    console.log('Polling error message: ' + error.message);  // => 'EFATAL'
 });
 
 function errorHandling(error) {
     if (error.code === 'EFATAL') {
         console.log('Network error with code:', error.code);
     } else if (error.code === 'EPARSE') {
-        console.log('Response body could not be parsed with code:', error.response.body);
+        console.log('Response body could not be parsed with body:', error.response.body);
     } else {
-        console.log('There was an error with code:', error.response.body);
+        console.log('There was an error with body:', error.response.body);
     }
 }
 module.exports = {bot};
