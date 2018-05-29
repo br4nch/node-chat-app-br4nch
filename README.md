@@ -1,2 +1,2 @@
 # node-chat-app-br4nch
-https://circleci.com/gh/:owner/:repo.png?circle-token=:circle-token
+[![CircleCI](https://circleci.com/gh/br4nch/node-chat-app-br4nch/tree/master.svg?style=svg)](https://circleci.com/gh/br4nch/node-chat-app-br4nch/tree/master)
